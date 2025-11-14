@@ -1,0 +1,178 @@
+/* Input component styles - Rustic and elegant */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+/* Label styles */
+.input__label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  line-height: var(--line-height-tight);
+}
+
+.input__required {
+  color: var(--color-error);
+  margin-left: var(--spacing-xs);
+}
+
+/* Input wrapper */
+.input__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Input field */
+.input__field {
+  /* Layout */
+  width: 100%;
+  padding: var(--spacing-md);
+  min-height: 2.75rem;
+  
+  /* Typography */
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  
+  /* Appearance */
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 1px 2px rgba(0, 0, 0, 0.02);
+  
+  /* Transitions */
+  transition: all var(--transition-normal);
+  
+  /* Remove default styles */
+  outline: none;
+  
+  /* Rustic texture */
+  background-image: linear-gradient(135deg, transparent 95%, rgba(139, 69, 19, 0.02) 95%);
+}
+
+.input__field::placeholder {
+  color: var(--color-text-light);
+  font-style: italic;
+}
+
+/* Focus state */
+.input__field:focus {
+  border-color: var(--color-primary);
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 0 0 3px rgba(139, 69, 19, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: #FFFEF8;
+}
+
+/* Hover state */
+.input__field:hover:not(:disabled):not(:focus) {
+  border-color: var(--color-primary-light);
+  background-color: #FFFEF8;
+}
+
+/* Error state */
+.input-group--error .input__field {
+  border-color: var(--color-error);
+  background-color: rgba(178, 34, 34, 0.02);
+}
+
+.input-group--error .input__field:focus {
+  border-color: var(--color-error);
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 0 0 3px rgba(178, 34, 34, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Disabled state */
+.input-group--disabled .input__label {
+  opacity: 0.6;
+}
+
+.input__field:disabled {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Error icon */
+.input__error-icon {
+  position: absolute;
+  right: var(--spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-error);
+  pointer-events: none;
+}
+
+.input__error-icon-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Error message */
+.input__error {
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  font-weight: var(--font-weight-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  line-height: var(--line-height-tight);
+}
+
+.input__error::before {
+  content: '⚠';
+  font-size: var(--font-size-xs);
+}
+
+/* Special input types */
+.input__field[type="email"] {
+  background-image: 
+    linear-gradient(135deg, transparent 95%, rgba(139, 69, 19, 0.02) 95%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A9A9A9' stroke-width='1' opacity='0.3'%3E%3Cpath d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/%3E%3Cpolyline points='22,6 12,13 2,6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat;
+  background-position: right var(--spacing-md) center, right calc(var(--spacing-md) + 1.5rem) center;
+  background-size: auto, 1rem;
+  padding-right: calc(var(--spacing-md) + 3rem);
+}
+
+.input__field[type="password"] {
+  background-image: 
+    linear-gradient(135deg, transparent 95%, rgba(139, 69, 19, 0.02) 95%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A9A9A9' stroke-width='1' opacity='0.3'%3E%3Crect x='3' y='11' width='18' height='11' rx='2' ry='2'/%3E%3Ccircle cx='12' cy='16' r='1'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat;
+  background-position: right var(--spacing-md) center, right calc(var(--spacing-md) + 1.5rem) center;
+  background-size: auto, 1rem;
+  padding-right: calc(var(--spacing-md) + 3rem);
+}
+
+/* Remove background icons when there's an error icon */
+.input-group--error .input__field[type="email"],
+.input-group--error .input__field[type="password"] {
+  background-image: linear-gradient(135deg, transparent 95%, rgba(139, 69, 19, 0.02) 95%);
+  padding-right: calc(var(--spacing-md) + 2rem);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .input__field {
+    padding: var(--spacing-sm) var(--spacing-md);
+    min-height: 2.5rem;
+    font-size: var(--font-size-base);
+  }
+  
+  .input__label {
+    font-size: var(--font-size-base);
+  }
+}

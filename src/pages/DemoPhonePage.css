@@ -1,0 +1,244 @@
+/* DemoPhonePage.css - Estilos para la página de demostración */
+
+.demo-phone-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-container {
+  max-width: 800px;
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.demo-container h1 {
+  color: #1f2937;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.demo-section {
+  margin-bottom: 2rem;
+}
+
+.demo-section h2 {
+  color: #374151;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.demo-section h3 {
+  color: #4b5563;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.validation-info {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.validation-info pre {
+  margin: 0;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 0.875rem;
+  color: #374151;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.phone-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.phone-info p {
+  margin: 0.5rem 0;
+  color: #1e40af;
+  font-weight: 500;
+}
+
+.examples {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.examples ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.examples li {
+  color: #15803d;
+  margin: 0.5rem 0;
+  font-weight: 500;
+}
+
+.test-buttons {
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.test-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.test-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.test-btn:active {
+  transform: translateY(0);
+}
+
+.features-list {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.features-list h2 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.features-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.features-list li {
+  padding: 0.5rem 0;
+  color: #475569;
+  font-weight: 500;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.features-list li:last-child {
+  border-bottom: none;
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.back-link a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.back-link a:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .demo-phone-page {
+    padding: 1rem;
+  }
+  
+  .demo-container {
+    padding: 1.5rem;
+  }
+  
+  .demo-container h1 {
+    font-size: 1.5rem;
+  }
+  
+  .test-btn {
+    display: block;
+    width: 100%;
+    margin: 0.25rem 0;
+  }
+}
+
+/* Mejoras para accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .test-btn {
+    transition: none;
+  }
+  
+  .test-btn:hover {
+    transform: none;
+  }
+}
+
+/* Modo oscuro (opcional) */
+@media (prefers-color-scheme: dark) {
+  .demo-phone-page {
+    background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
+  }
+  
+  .demo-container {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+  
+  .demo-container h1,
+  .demo-section h2,
+  .demo-section h3 {
+    color: #f9fafb;
+  }
+  
+  .validation-info {
+    background: #374151;
+    border-color: #4b5563;
+  }
+  
+  .validation-info pre {
+    color: #e5e7eb;
+  }
+  
+  .phone-info {
+    background: #1e3a8a;
+    border-color: #3b82f6;
+  }
+  
+  .phone-info p {
+    color: #93c5fd;
+  }
+}
