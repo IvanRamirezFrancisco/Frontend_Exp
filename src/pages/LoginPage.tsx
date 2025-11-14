@@ -155,7 +155,7 @@ export function LoginPage() {
                   aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                 >
                   <img 
-                    src={showPassword ? "/invisible.png" : "/ojo.png"}
+                    src={showPassword ? "/images/invisible.png" : "/images/ojo.png"}
                     alt={showPassword ? "Ocultar" : "Mostrar"}
                     className="password-toggle-icon"
                   />

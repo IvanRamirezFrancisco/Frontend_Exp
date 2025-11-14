@@ -159,11 +159,11 @@ const TwoFactorPage: React.FC = () => {
   const getMethodIcon = (method: string) => {
     switch (method) {
       case 'GOOGLE_AUTHENTICATOR':
-        return '/Google.png';
+        return '/images/Google.png';
       case 'EMAIL':
-        return '/GMAIL.png';
+        return '/images/GMAIL.png';
       case 'SMS':
-        return '/SMS.png';
+        return '/images/SMS.png';
       default:
         return '🔒';
     }
@@ -188,7 +188,7 @@ const TwoFactorPage: React.FC = () => {
       methods.push({ value: 'EMAIL', label: 'Correo Electrónico', icon: '/GMAIL.png' });
     }
     if (availableMethods.googleAuthenticator) {
-      methods.push({ value: 'GOOGLE_AUTHENTICATOR', label: 'Google Authenticator', icon: '/Google.png' });
+      methods.push({ value: 'GOOGLE_AUTHENTICATOR', label: 'Google Authenticator', icon: '/images/Google.png' });
     }
     if (availableMethods.sms) {
       methods.push({ value: 'SMS', label: 'SMS', icon: '/SMS.png' });
@@ -310,7 +310,7 @@ const TwoFactorPage: React.FC = () => {
             )}
             {method === 'GOOGLE_AUTHENTICATOR' && (
               <div className="code-helper">
-                <span className="helper-icon"><img src="/Google.png" alt="Google Authenticator" width="20" height="20" /></span>
+                <span className="helper-icon"><img src="/images/Google.png" alt="Google Authenticator" width="20" height="20" /></span>
                 Abre la app de Google Authenticator y ingresa el código actual
               </div>
             )}

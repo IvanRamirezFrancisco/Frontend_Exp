@@ -368,7 +368,7 @@ export function RegisterPage() {
                     aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                   >
                     <img 
-                      src={showPassword ? "/invisible.png" : "/ojo.png"}
+                      src={showPassword ? "/images/invisible.png" : "/images/ojo.png"}
                       alt={showPassword ? "Ocultar" : "Mostrar"}
                       className="password-toggle-icon"
                     />
@@ -441,7 +441,7 @@ export function RegisterPage() {
                   aria-label={showConfirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                 >
                   <img 
-                    src={showConfirmPassword ? "/invisible.png" : "/ojo.png"}
+                    src={showConfirmPassword ? "/images/invisible.png" : "/images/ojo.png"}
                     alt={showConfirmPassword ? "Ocultar" : "Mostrar"}
                     className="password-toggle-icon"
                   />

@@ -278,7 +278,7 @@ export function ResetPasswordPage() {
                       aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                     >
                       <img 
-                        src={showPassword ? "/invisible.png" : "/ojo.png"}
+                        src={showPassword ? "/images/invisible.png" : "/images/ojo.png"}
                         alt={showPassword ? "Ocultar" : "Mostrar"}
                       />
                     </button>
@@ -336,7 +336,7 @@ export function ResetPasswordPage() {
                       aria-label={showConfirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                     >
                       <img 
-                        src={showConfirmPassword ? "/invisible.png" : "/ojo.png"}
+                        src={showConfirmPassword ? "/images/invisible.png" : "/images/ojo.png"}
                         alt={showConfirmPassword ? "Ocultar" : "Mostrar"}
                       />
                     </button>

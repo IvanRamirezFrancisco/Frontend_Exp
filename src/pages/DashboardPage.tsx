@@ -76,7 +76,7 @@ export function DashboardPage() {
       id: 'google',
       name: 'Google Authenticator',
       description: 'Códigos TOTP generados por la aplicación',
-      icon: '/Google.png',
+      icon: '/images/Google.png',
       enabled: user?.googleAuthEnabled || false,
       setup: setupGoogleAuth,
       disable: disableGoogleAuth
@@ -85,7 +85,7 @@ export function DashboardPage() {
       id: 'sms',
       name: 'SMS 2FA',
       description: 'Códigos enviados a tu teléfono móvil',
-      icon: '/SMS.png',
+      icon: '/images/SMS.png',
       enabled: user?.smsEnabled || false,
       setup: () => {
         setSmsStep('phone');
@@ -99,7 +99,7 @@ export function DashboardPage() {
       id: 'email',
       name: 'Email 2FA',
       description: 'Códigos enviados a tu correo electrónico',
-      icon: '/GMAIL.png',
+      icon: '/images/GMAIL.png',
       enabled: user?.emailEnabled || false,
       setup: setupEmailAuth,
       disable: disableEmailAuth
