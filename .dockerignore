@@ -3,9 +3,7 @@ dist
 .git
 .gitignore
 README.md
-.env
 .env.local
-.env.production
 .env.test
 *.log
 npm-debug.log*
