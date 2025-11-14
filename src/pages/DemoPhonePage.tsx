@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { PhoneInput } from '../components/common/PhoneInput';
 import { validateInternationalPhone } from '../utils/phoneUtils';
 import './DemoPhonePage.css';
