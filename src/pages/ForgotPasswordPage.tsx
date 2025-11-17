@@ -13,7 +13,9 @@ export function ForgotPasswordPage() {
   const navigate = useNavigate();
 
   const validateEmail = (email: string): boolean => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    // Usar la validación profesional del utility
+    const emailRegex = /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/;
+    return emailRegex.test(email);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
