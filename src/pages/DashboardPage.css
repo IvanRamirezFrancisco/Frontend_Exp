@@ -838,6 +838,73 @@
   cursor: not-allowed;
 }
 
+/* SMS Modal Professional Styles */
+.sms-modal .modal-content {
+  max-width: 450px;
+}
+
+.sms-modal .info-box {
+  background: rgba(13, 110, 253, 0.1);
+  border-left: 4px solid #0d6efd;
+  color: #084298;
+  font-weight: 500;
+}
+
+.sms-modal .info-box strong {
+  color: #041e42;
+  font-weight: 700;
+  font-family: monospace;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.secondary-button {
+  background: transparent !important;
+  border: 2px solid #6c757d !important;
+  color: #6c757d !important;
+  font-weight: 600 !important;
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  width: 100% !important;
+  margin-top: 15px !important;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: #6c757d !important;
+  color: white !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3) !important;
+}
+
+.secondary-button:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+/* Phone number masking styles */
+.masked-phone {
+  font-family: monospace;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #2c3e50;
+}
+
+/* Code input disabled state */
+.sms-modal .input__field:disabled {
+  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+  border-color: #dee2e6 !important;
+  cursor: not-allowed !important;
+}
+
+/* Success state for code sent */
+.code-sent-success {
+  background: rgba(25, 135, 84, 0.1) !important;
+  border-left: 4px solid #198754 !important;
+  color: #0f5132 !important;
+}
+
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;

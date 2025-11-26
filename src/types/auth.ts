@@ -62,6 +62,8 @@ export interface ApiResponse<T = any> {
   message: string;
   data?: T;
   error?: string;
+  phoneNumber?: string;  // Para respuestas de SMS
+  requiresPhoneUpdate?: boolean;  // Para indicar si se necesita actualizar teléfono
 }
 
 export interface PasswordResetRequest {

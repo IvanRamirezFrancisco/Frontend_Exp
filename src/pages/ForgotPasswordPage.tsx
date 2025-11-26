@@ -82,7 +82,7 @@ export function ForgotPasswordPage() {
               Recuperar contraseña
             </h2>
             <p className="forgot-password-subtitle">
-              Ingresa tu email y te enviaremos un enlace para restablecer tu contraseña
+              Ingresa tu email registrado y verificado. Te enviaremos un enlace seguro para restablecer tu contraseña
             </p>
           </div>
 
@@ -121,6 +121,14 @@ export function ForgotPasswordPage() {
                     disabled={isLoading}
 
                   />
+                </div>
+
+                <div className="security-note">
+                  <div className="security-icon">🔒</div>
+                  <p>
+                    <strong>Nota de seguridad:</strong> Solo las cuentas verificadas pueden solicitar 
+                    restablecimiento de contraseña. El enlace será válido por 1 hora.
+                  </p>
                 </div>
 
                 <div className="form-actions">

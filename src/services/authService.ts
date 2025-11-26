@@ -138,6 +138,18 @@ class AuthService {
     return response.data;
   }
 
+  // Nuevo: Habilitar SMS 2FA usando número existente
+  async enableSmsWithExistingNumber(): Promise<ApiResponse> {
+    const response = await apiClient.post<ApiResponse>('/2fa/sms/enable-existing');
+    return response.data;
+  }
+
+  // Nuevo: Actualizar número de teléfono y habilitar SMS 2FA
+  async updatePhoneAndEnableSms(phoneNumber: string): Promise<ApiResponse> {
+    const response = await apiClient.post<ApiResponse>('/2fa/sms/update-phone', { phoneNumber });
+    return response.data;
+  }
+
   async confirmSmsTwoFactor(code: string): Promise<ApiResponse> {
     const response = await apiClient.post<ApiResponse>('/2fa/sms/setup/verify-code', { code });
     return response.data;
