@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
+import { PhoneInput } from '../components/common/PhoneInput';
 import { ToastContainer, useToast } from '../components/common/Toast';
 import { authService } from '../services/authService';
 import './DashboardPage.css';
@@ -106,7 +107,7 @@ export function DashboardPage() {
       icon: '/images/SMS.png',
       enabled: user?.smsEnabled || false,
       setup: () => {
-        setupSmsAuth();
+        openSmsModal();
       },
       disable: disableSmsAuth
     },
@@ -215,45 +216,45 @@ export function DashboardPage() {
     }
   };
 
+  // Función separada para abrir el modal inicial
+  const openSmsModal = () => {
+    if (user?.phone && user.phone.trim() !== '') {
+      // Usuario tiene número registrado, mostrar modal inicial
+      setSmsPhone(user.phone);
+      setSmsModalStep('initial');
+      setIsCodeInputEnabled(false);
+      setCodeSentSuccessfully(false);
+      setShowSmsModal(true);
+    } else {
+      // No hay número registrado, ir a pantalla de actualizar número
+      setSmsPhone('');
+      setSmsModalStep('edit-phone');
+      setIsCodeInputEnabled(false);
+      setCodeSentSuccessfully(false);
+      setShowSmsModal(true);
+    }
+  };
+
+  // Función para enviar código SMS (cuando se presiona "Enviar código")
   const setupSmsAuth = async () => {
-    // Verificar si el usuario ya tiene un número registrado
     if (user?.phone && user.phone.trim() !== '') {
       try {
         setIsEnablingSms(true);
         const response = await authService.enableSmsWithExistingNumber();
         if (response.success) {
           setSmsPhone(response.phoneNumber || user.phone);
-          setSmsModalStep('code-sent');
           setIsCodeInputEnabled(true);
           setCodeSentSuccessfully(true);
-          setShowSmsModal(true);
-          showSuccess('Código enviado', `Código SMS enviado a tu número registrado: ${response.phoneNumber || user.phone}`);
+          showSuccess('Código enviado', `Código SMS enviado a tu número registrado: ${maskPhoneNumber(response.phoneNumber || user.phone)}`);
         } else {
-          // Si falla, mostrar opción para actualizar número
-          setSmsPhone(user.phone);
-          setSmsModalStep('edit-phone');
-          setIsCodeInputEnabled(false);
-          setCodeSentSuccessfully(false);
-          setShowSmsModal(true);
+          showError('Error de envío', response.message || 'Error al enviar código SMS');
         }
       } catch (error: any) {
         console.error('Error enabling SMS with existing number:', error);
-        // En caso de error, abrir modal para ingresar/actualizar número
-        setSmsPhone(user.phone || '');
-        setSmsModalStep('edit-phone');
-        setIsCodeInputEnabled(false);
-        setCodeSentSuccessfully(false);
-        setShowSmsModal(true);
+        showError('Error de conexión', error.response?.data?.message || 'Error al enviar código SMS');
       } finally {
         setIsEnablingSms(false);
       }
-    } else {
-      // No hay número registrado, solicitar uno nuevo
-      setSmsPhone('');
-      setSmsModalStep('edit-phone');
-      setIsCodeInputEnabled(false);
-      setCodeSentSuccessfully(false);
-      setShowSmsModal(true);
     }
   };
 
@@ -768,13 +769,11 @@ export function DashboardPage() {
                       </div>
                     )}
                     
-                    <Input
-                      type="tel"
-                      name="smsPhone"
+                    <PhoneInput
                       label="Nuevo número de teléfono"
-                      placeholder="+1234567890"
+                      placeholder="Ingresa tu número"
                       value={smsPhone}
-                      onChange={(e) => setSmsPhone(e.target.value)}
+                      onChange={(newValue) => setSmsPhone(newValue)}
                       disabled={isEnablingSms}
                     />
                     
