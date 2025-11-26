@@ -789,7 +789,7 @@ export function DashboardPage() {
                     {user?.phone && (
                       <Button
                         onClick={() => {
-                          setSmsPhone(user.phone || '');
+                          // No establecer el número por seguridad, solo cambiar de paso
                           setSmsModalStep('initial');
                           setIsCodeInputEnabled(false);
                           setCodeSentSuccessfully(false);
@@ -825,7 +825,7 @@ export function DashboardPage() {
                     <Button
                       onClick={() => {
                         setSmsModalStep('edit-phone');
-                        setSmsPhone(user?.phone || '');
+                        setSmsPhone(''); // No mostrar el número actual por seguridad
                       }}
                       variant="outline"
                       disabled={isEnablingSms}
