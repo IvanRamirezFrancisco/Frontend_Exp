@@ -583,12 +583,17 @@
 
 .modal-actions {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   justify-content: flex-end;
   padding: 0 30px 30px;
   margin-top: 25px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-top: 25px;
+  flex-wrap: wrap;
+}
+
+.modal-actions .secondary-button {
+  margin-top: 0 !important;
 }
 
 .dashboard-loading {

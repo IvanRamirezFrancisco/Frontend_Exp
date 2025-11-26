@@ -250,7 +250,7 @@ export function DashboardPage() {
     } else {
       // No hay número registrado, solicitar uno nuevo
       setSmsPhone('');
-      setSmsModalStep('initial');
+      setSmsModalStep('edit-phone');
       setIsCodeInputEnabled(false);
       setCodeSentSuccessfully(false);
       setShowSmsModal(true);
@@ -274,7 +274,7 @@ export function DashboardPage() {
       setIsEnablingSms(true);
       const response = await authService.updatePhoneAndEnableSms(smsPhone);
       if (response.success) {
-        setSmsModalStep('code-sent');
+        setSmsModalStep('initial');
         setIsCodeInputEnabled(true);
         setCodeSentSuccessfully(true);
         showSuccess('Número actualizado', 'Número actualizado y código SMS enviado. Revisa tu teléfono.');
@@ -289,37 +289,7 @@ export function DashboardPage() {
     }
   };
 
-  const sendSmsCode = async () => {
-    if (!smsPhone.trim()) {
-      showWarning('Teléfono requerido', 'Por favor ingresa un número de teléfono válido');
-      return;
-    }
 
-    // Validar formato básico de teléfono
-    const phoneRegex = /^\+?[\d\s\-\(\)]{10,15}$/;
-    if (!phoneRegex.test(smsPhone)) {
-      showWarning('Formato inválido', 'Por favor ingresa un número de teléfono válido (ej: +1234567890)');
-      return;
-    }
-    
-    try {
-      setIsEnablingSms(true);
-      const response = await authService.setupSmsTwoFactor(smsPhone);
-      if (response.success) {
-        setSmsModalStep('code-sent');
-        setIsCodeInputEnabled(true);
-        setCodeSentSuccessfully(true);
-        showSuccess('Código enviado', 'Código SMS enviado. Revisa tu teléfono.');
-      } else {
-        showError('Error de envío', response.message || 'Error al enviar código SMS');
-      }
-    } catch (error: any) {
-      console.error('Error sending SMS code:', error);
-      showError('Error de conexión', error.response?.data?.message || 'Error al enviar código SMS');
-    } finally {
-      setIsEnablingSms(false);
-    }
-  };
 
   const confirmSmsAuth = async () => {
     if (!smsCode || smsCode.length < 4) {
@@ -766,74 +736,27 @@ export function DashboardPage() {
               <div className="modal-body">
                 {smsModalStep === 'initial' ? (
                   <>
-                    {user?.phone ? (
-                      <>
-                        <p>Se enviará un código de verificación al número:</p>
-                        <div className="info-box">
-                          <span className="info-icon">📱</span>
-                          <span><strong>{maskPhoneNumber(user.phone)}</strong></span>
-                        </div>
-                        <p style={{ fontSize: '14px', color: '#666', marginTop: '10px' }}>
-                          ¿No es tu número? Puedes actualizarlo más adelante.
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <p>Configura tu número de teléfono para recibir códigos de verificación por SMS.</p>
-                        
-                        <Input
-                          type="tel"
-                          name="smsPhone"
-                          label="Número de teléfono"
-                          placeholder="+1234567890"
-                          value={smsPhone}
-                          onChange={(e) => setSmsPhone(e.target.value)}
-                          disabled={isEnablingSms}
-                        />
-                        
-                        <div className="info-box">
-                          <span className="info-icon">ℹ️</span>
-                          <span>Incluye el código de país. Ejemplo: +52 para México</span>
-                        </div>
-                      </>
-                    )}
-                  </>
-                ) : smsModalStep === 'code-sent' ? (
-                  <>
-                    <p>Ingresa el código de verificación que enviamos a:</p>
-                    <div className="info-box" style={{ marginBottom: '15px' }}>
-                      <span className="info-icon">📱</span>
-                      <span><strong>{maskPhoneNumber(smsPhone)}</strong></span>
-                    </div>
+                    <p style={{ fontSize: '16px', marginBottom: '15px', color: '#2c3e50' }}>
+                      Código para el envío del código es: <strong className="masked-phone">{user?.phone ? maskPhoneNumber(user.phone) : '*******XX'}</strong>
+                    </p>
                     
                     <Input
                       type="text"
                       name="smsCode"
                       label="Código de verificación"
-                      placeholder="123456"
+                      placeholder="Ingresa el código aquí"
                       value={smsCode}
                       onChange={(e) => setSmsCode(e.target.value)}
-                      disabled={!isCodeInputEnabled || isEnablingSms}
+                      disabled={!isCodeInputEnabled}
                       maxLength={6}
                     />
                     
-                    <div className={`info-box ${codeSentSuccessfully ? 'code-sent-success' : ''}`}>
-                      <span className="info-icon">{codeSentSuccessfully ? '✅' : '⏱️'}</span>
-                      <span>{codeSentSuccessfully ? 'Código enviado exitosamente - Expira en 5 minutos' : 'El código expira en 5 minutos'}</span>
-                    </div>
-
-                    <Button
-                      onClick={() => {
-                        setSmsModalStep('edit-phone');
-                        setSmsCode('');
-                        setIsCodeInputEnabled(false);
-                      }}
-                      variant="outline"
-                      disabled={isEnablingSms}
-                      className="secondary-button"
-                    >
-                      Cambiar número de teléfono
-                    </Button>
+                    {codeSentSuccessfully && (
+                      <div className="info-box code-sent-success">
+                        <span className="info-icon">✅</span>
+                        <span>Código enviado exitosamente - Expira en 5 minutos</span>
+                      </div>
+                    )}
                   </>
                 ) : smsModalStep === 'edit-phone' ? (
                   <>
@@ -865,6 +788,8 @@ export function DashboardPage() {
                         onClick={() => {
                           setSmsPhone(user.phone || '');
                           setSmsModalStep('initial');
+                          setIsCodeInputEnabled(false);
+                          setCodeSentSuccessfully(false);
                         }}
                         variant="outline"
                         disabled={isEnablingSms}
@@ -880,49 +805,53 @@ export function DashboardPage() {
               <div className="modal-actions">
                 <Button
                   onClick={() => {
-                    if (smsModalStep === 'code-sent') {
-                      setSmsModalStep('initial');
-                      setSmsCode('');
-                      setIsCodeInputEnabled(false);
-                    } else if (smsModalStep === 'edit-phone') {
-                      setSmsModalStep('initial');
-                      setSmsPhone(user?.phone || '');
-                    } else {
-                      setShowSmsModal(false);
-                      setSmsModalStep('initial');
-                      setIsCodeInputEnabled(false);
-                      setCodeSentSuccessfully(false);
-                    }
+                    setShowSmsModal(false);
+                    setSmsModalStep('initial');
+                    setIsCodeInputEnabled(false);
+                    setCodeSentSuccessfully(false);
+                    setSmsCode('');
                   }}
                   variant="outline"
                   disabled={isEnablingSms}
                 >
-                  {smsModalStep === 'code-sent' || smsModalStep === 'edit-phone' ? 'Volver' : 'Cancelar'}
+                  Cancelar
                 </Button>
-                <Button
-                  onClick={
-                    smsModalStep === 'initial' ? 
-                      (user?.phone ? setupSmsAuth : sendSmsCode) :
-                    smsModalStep === 'edit-phone' ?
-                      updatePhoneAndEnableSms :
-                    confirmSmsAuth
-                  }
-                  variant="primary"
-                  loading={isEnablingSms}
-                  disabled={
-                    smsModalStep === 'initial' && !user?.phone ? !smsPhone.trim() :
-                    smsModalStep === 'edit-phone' ? !smsPhone.trim() :
-                    !smsCode.trim()
-                  }
-                >
-                  {
-                    smsModalStep === 'initial' ? 
-                      (user?.phone ? 'Enviar código SMS' : 'Enviar código') :
-                    smsModalStep === 'edit-phone' ?
-                      'Actualizar y enviar código' :
-                    'Confirmar'
-                  }
-                </Button>
+                
+                {smsModalStep === 'initial' && (
+                  <>
+                    <Button
+                      onClick={() => {
+                        setSmsModalStep('edit-phone');
+                        setSmsPhone(user?.phone || '');
+                      }}
+                      variant="outline"
+                      disabled={isEnablingSms}
+                      className="secondary-button"
+                    >
+                      Actualizar número
+                    </Button>
+                    
+                    <Button
+                      onClick={!isCodeInputEnabled ? setupSmsAuth : confirmSmsAuth}
+                      variant="primary"
+                      loading={isEnablingSms}
+                      disabled={isCodeInputEnabled && !smsCode.trim()}
+                    >
+                      {!isCodeInputEnabled ? 'Enviar código' : 'Confirmar código'}
+                    </Button>
+                  </>
+                )}
+                
+                {smsModalStep === 'edit-phone' && (
+                  <Button
+                    onClick={updatePhoneAndEnableSms}
+                    variant="primary"
+                    loading={isEnablingSms}
+                    disabled={!smsPhone.trim()}
+                  >
+                    Actualizar y enviar código
+                  </Button>
+                )}
               </div>
             </div>
           </div>
