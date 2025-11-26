@@ -737,7 +737,7 @@ export function DashboardPage() {
                   <>
                     {user?.phone ? (
                       <p style={{ fontSize: '16px', marginBottom: '15px', color: '#2c3e50' }}>
-                        Código para el envío del código es: <strong className="masked-phone">{maskPhoneNumber(user.phone)}</strong>
+                        El código sería enviado al número <strong className="masked-phone">{maskPhoneNumber(user.phone)}</strong>
                       </p>
                     ) : (
                       <p style={{ fontSize: '16px', marginBottom: '15px', color: '#2c3e50' }}>
