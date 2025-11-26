@@ -216,45 +216,39 @@ export function DashboardPage() {
     }
   };
 
-  // Función separada para abrir el modal inicial
+  // Función para abrir el modal inicial (siempre pantalla inicial)
   const openSmsModal = () => {
-    if (user?.phone && user.phone.trim() !== '') {
-      // Usuario tiene número registrado, mostrar modal inicial
-      setSmsPhone(user.phone);
-      setSmsModalStep('initial');
-      setIsCodeInputEnabled(false);
-      setCodeSentSuccessfully(false);
-      setShowSmsModal(true);
-    } else {
-      // No hay número registrado, ir a pantalla de actualizar número
-      setSmsPhone('');
-      setSmsModalStep('edit-phone');
-      setIsCodeInputEnabled(false);
-      setCodeSentSuccessfully(false);
-      setShowSmsModal(true);
-    }
+    // Siempre mostrar la pantalla inicial con input de código bloqueado
+    setSmsPhone(user?.phone || '');
+    setSmsModalStep('initial');
+    setIsCodeInputEnabled(false);
+    setCodeSentSuccessfully(false);
+    setShowSmsModal(true);
   };
 
   // Función para enviar código SMS (cuando se presiona "Enviar código")
   const setupSmsAuth = async () => {
-    if (user?.phone && user.phone.trim() !== '') {
-      try {
-        setIsEnablingSms(true);
-        const response = await authService.enableSmsWithExistingNumber();
-        if (response.success) {
-          setSmsPhone(response.phoneNumber || user.phone);
-          setIsCodeInputEnabled(true);
-          setCodeSentSuccessfully(true);
-          showSuccess('Código enviado', `Código SMS enviado a tu número registrado: ${maskPhoneNumber(response.phoneNumber || user.phone)}`);
-        } else {
-          showError('Error de envío', response.message || 'Error al enviar código SMS');
-        }
-      } catch (error: any) {
-        console.error('Error enabling SMS with existing number:', error);
-        showError('Error de conexión', error.response?.data?.message || 'Error al enviar código SMS');
-      } finally {
-        setIsEnablingSms(false);
+    if (!user?.phone || user.phone.trim() === '') {
+      showWarning('Número requerido', 'Primero debes configurar un número de teléfono');
+      return;
+    }
+
+    try {
+      setIsEnablingSms(true);
+      const response = await authService.enableSmsWithExistingNumber();
+      if (response.success) {
+        setSmsPhone(response.phoneNumber || user.phone);
+        setIsCodeInputEnabled(true);
+        setCodeSentSuccessfully(true);
+        showSuccess('Código enviado', `Código SMS enviado a tu número: ${maskPhoneNumber(response.phoneNumber || user.phone)}`);
+      } else {
+        showError('Error de envío', response.message || 'Error al enviar código SMS');
       }
+    } catch (error: any) {
+      console.error('Error enabling SMS with existing number:', error);
+      showError('Error de conexión', error.response?.data?.message || 'Error al enviar código SMS');
+    } finally {
+      setIsEnablingSms(false);
     }
   };
 
@@ -275,12 +269,16 @@ export function DashboardPage() {
       setIsEnablingSms(true);
       const response = await authService.updatePhoneAndEnableSms(smsPhone);
       if (response.success) {
+        // Actualizar el contexto del usuario con el nuevo número
+        if (updateUser && user) {
+          updateUser({ ...user, phone: smsPhone });
+        }
         setSmsModalStep('initial');
-        setIsCodeInputEnabled(true);
-        setCodeSentSuccessfully(true);
-        showSuccess('Número actualizado', 'Número actualizado y código SMS enviado. Revisa tu teléfono.');
+        setIsCodeInputEnabled(false);
+        setCodeSentSuccessfully(false);
+        showSuccess('Número actualizado', 'Número de teléfono actualizado correctamente.');
       } else {
-        showError('Error de envío', response.message || 'Error al actualizar número y enviar código SMS');
+        showError('Error de actualización', response.message || 'Error al actualizar número de teléfono');
       }
     } catch (error: any) {
       console.error('Error updating phone and enabling SMS:', error);
@@ -737,15 +735,21 @@ export function DashboardPage() {
               <div className="modal-body">
                 {smsModalStep === 'initial' ? (
                   <>
-                    <p style={{ fontSize: '16px', marginBottom: '15px', color: '#2c3e50' }}>
-                      Código para el envío del código es: <strong className="masked-phone">{user?.phone ? maskPhoneNumber(user.phone) : '*******XX'}</strong>
-                    </p>
+                    {user?.phone ? (
+                      <p style={{ fontSize: '16px', marginBottom: '15px', color: '#2c3e50' }}>
+                        Código para el envío del código es: <strong className="masked-phone">{maskPhoneNumber(user.phone)}</strong>
+                      </p>
+                    ) : (
+                      <p style={{ fontSize: '16px', marginBottom: '15px', color: '#2c3e50' }}>
+                        Primero necesitas configurar un número de teléfono para recibir códigos SMS.
+                      </p>
+                    )}
                     
                     <Input
                       type="text"
                       name="smsCode"
                       label="Código de verificación"
-                      placeholder="Ingresa el código aquí"
+                      placeholder={user?.phone ? "Ingresa el código aquí" : "Configure primero su número"}
                       value={smsCode}
                       onChange={(e) => setSmsCode(e.target.value)}
                       disabled={!isCodeInputEnabled}
@@ -834,7 +838,7 @@ export function DashboardPage() {
                       onClick={!isCodeInputEnabled ? setupSmsAuth : confirmSmsAuth}
                       variant="primary"
                       loading={isEnablingSms}
-                      disabled={isCodeInputEnabled && !smsCode.trim()}
+                      disabled={!user?.phone || (isCodeInputEnabled && !smsCode.trim())}
                     >
                       {!isCodeInputEnabled ? 'Enviar código' : 'Confirmar código'}
                     </Button>
@@ -848,7 +852,7 @@ export function DashboardPage() {
                     loading={isEnablingSms}
                     disabled={!smsPhone.trim()}
                   >
-                    Actualizar y enviar código
+                    Actualizar
                   </Button>
                 )}
               </div>
